@@ -347,7 +347,7 @@
 		var/list/seen = viewers(7, my_burrow.loc)
 		my_burrow.audio("crumble", 80)
 		for(var/mob/M in seen)
-			M.show_message("<span class='warning'>The burrow collapses inwards!</span>"), 1)
+			M.show_message("<span class='warning'>The burrow collapses inwards!</span>", 1)
 
 		free_deepmaint_ladders -= src
 		my_burrow.collapse()
