@@ -33,7 +33,7 @@ var/datum/controller/process/open_space/OS_controller = null
 			OD.up = levels[OD.z + 1]
 
 	var/datum/ospace_data/OD
-	for(var/turf/simulated/open/T in turfs)
+	for(var/turf/open/open/T in turfs)
 		OD = levels[T.z]
 		if(OD)
 			OD.fast += T
@@ -78,7 +78,7 @@ var/datum/controller/process/open_space/OS_controller = null
 	. = ..()
 	OS_controller.add_turf(src)
 
-/turf/simulated/open/New()
+/turf/open/open/New()
 	..()
 	OS_controller.add_turf(src)
 
@@ -124,7 +124,7 @@ var/datum/controller/process/open_space/OS_controller = null
 	var/list/normalholder = list()
 	var/list/fastholder = list()
 
-	for(var/turf/simulated/open/T in L)
+	for(var/turf/open/open/T in L)
 
 		switch(T.update_icon())
 			if(LIST_SLOW)
@@ -153,7 +153,7 @@ var/datum/controller/process/open_space/OS_controller = null
 	return
 
 
-/turf/simulated/open/update_icon()
+/turf/open/open/update_icon()
 	overlays.Cut()
 	var/turf/below = GetBelow(src)
 	if(below)
@@ -168,7 +168,7 @@ var/datum/controller/process/open_space/OS_controller = null
 		color = below.color//rgb(127,127,127)
 		overlays += below.overlays
 
-		if(!istype(below,/turf/simulated/open))
+		if(!istype(below,/turf/open/open))
 			// get objects
 			var/image/o_img = list()
 			for(var/obj/o in below)

@@ -16,7 +16,7 @@
 	set category = "IC"
 
 	if(zMove(UP))
-		to_chat(usr, SPAN_NOTICE("You move upwards."))
+		to_chat(usr, "<span class='notice'>You move upwards.</span>")
 
 /**
  * Verb for the mob to move down a z-level if possible.
@@ -26,7 +26,7 @@
 	set category = "IC"
 
 	if(zMove(DOWN))
-		to_chat(usr, SPAN_NOTICE("You move down."))
+		to_chat(usr, "<span class='notice'>You move down.</span>")
 
 /**
  * Used to check if a mob can move up or down a Z-level and to then actually do the move.
@@ -51,7 +51,7 @@
 	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
 	var/turf/start = get_turf(src)
 	if(!destination)
-		to_chat(src, SPAN_NOTICE("There is nothing of interest in this direction"))
+		to_chat(src, "<span class='notice'>There is nothing of interest in this direction.</span>")
 		return FALSE
 
 	//After checking that there's a valid destination, we'll first attempt phase movement as a shortcut.
@@ -69,16 +69,16 @@
 	)
 
 	if(!start.CanZPass(mover, direction))
-		to_chat(src, SPAN_WARNING("You can't leave this place in this direction."))
+		to_chat(src, "<span class='warning'>You can't leave this place in this direction.</span>")
 		return FALSE
 	if(!destination.CanZPass(mover, (direction == UP ? DOWN : UP) ))
-		to_chat(src, SPAN_WARNING("\The [destination] blocks you."))
+		to_chat(src, "<span class='warning'>\The [destination] blocks you.</span>")
 		return FALSE
 
 	// Check for blocking atoms at the destination.
 	for (var/atom/A in destination)
 		if (!A.CanPass(mover, start, 1.5, 0))
-			to_chat(src, SPAN_WARNING("\The [A] blocks you."))
+			to_chat(src, "<span class='warning'>\The [A] blocks you.</span>")
 			return FALSE
 
 	for (var/a in possible_methods)
@@ -86,7 +86,7 @@
 		if (VTM.attempt(direction))
 			return TRUE
 
-	to_chat(src, SPAN_NOTICE("You lack a means of z-travel in that direction."))
+	to_chat(src, "<span class='notice'>You lack a means of z-travel in that direction.</span>")
 	return FALSE
 
 /mob/living/zMove(direction)
@@ -120,7 +120,7 @@
 	if(allow_spacemove())
 		return TRUE
 
-	for(var/turf/simulated/T in trange(1,src))
+	for(var/turf/open/T in trange(1,src))
 		if(T.density)
 			if(check_shoegrip(FALSE))
 				return TRUE
@@ -132,7 +132,7 @@
 	if(allow_spacemove()) //Checks for active jetpack
 		return TRUE
 
-	for(var/turf/simulated/T in trange(1,src)) //Robots get "magboots"
+	for(var/turf/open/T in trange(1,src)) //Robots get "magboots"
 		if(T.density)
 			return TRUE
 
@@ -181,13 +181,13 @@
  * @param	below The turf that the mob is expected to end up at.
  * @param	dest The tile we're presuming the mob to be at for this check. Default
  * value is src.loc, (src. is important there!) but this is used for magboot lookahead
- * checks it turf/simulated/open/Enter().
+ * checks it turf/open/open/Enter().
  *
  * @return	TRUE if the atom can continue falling in its present situation.
  *			FALSE if it should stop falling and not invoke fall_through or fall_impact
  * this cycle.
  */
-/atom/movable/proc/can_fall(turf/below, turf/simulated/open/dest = src.loc)
+/atom/movable/proc/can_fall(turf/below, turf/open/open/dest = src.loc)
 	if (!istype(dest) || !dest.is_hole)
 		return FALSE
 
@@ -211,7 +211,7 @@
 /obj/effect/decal/cleanable/can_fall()
 	return TRUE
 
-/obj/item/pipe/can_fall(turf/below, turf/simulated/open/dest = src.loc)
+/obj/item/pipe/can_fall(turf/below, turf/open/open/dest = src.loc)
 	. = ..()
 
 	if((locate(/obj/structure/disposalpipe/up) in below) || locate(/obj/machinery/atmospherics/pipe/zpipe/up) in below)
@@ -219,7 +219,7 @@
 
 
 
-/mob/living/carbon/human/can_fall(turf/below, turf/simulated/open/dest = src.loc)
+/mob/living/carbon/human/can_fall(turf/below, turf/open/open/dest = src.loc)
 	// Special condition for jetpack mounted folk!
 	if (!restrained())
 		if (CanAvoidGravity())
@@ -233,7 +233,7 @@
 /mob/eye/can_fall()
 	return FALSE
 
-/mob/living/silicon/robot/can_fall(turf/below, turf/simulated/open/dest = src.loc)
+/mob/living/silicon/robot/can_fall(turf/below, turf/open/open/dest = src.loc)
 	if (CanAvoidGravity())
 		return FALSE
 

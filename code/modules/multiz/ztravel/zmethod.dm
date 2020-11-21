@@ -280,7 +280,7 @@
 
 	if (!spaces.len)
 		//Welp we didn't find one. lets loop again, all floors are allowed now
-		for (var/turf/simulated/floor/T in orange(1, M))
+		for (var/turf/open/floor/T in orange(1, M))
 			spaces.Add(T)
 
 	if (!spaces.len)
@@ -292,4 +292,4 @@
 	M.Move(target)
 	if (ismob(M))
 		mob.Weaken(2)
-	to_chat(mob, SPAN_DANGER("You lose control and slip into freefall"))
+	to_chat(mob, "<span class='danger'>You lose control and slip into freefall</span>")

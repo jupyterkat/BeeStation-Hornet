@@ -4,13 +4,13 @@
 
 	var/image/DARKOVER = null
 
-/turf/simulated/open
+/turf/open/open
 	isTransparent = TRUE
 
 /turf/space
 	isTransparent = TRUE
 
-/turf/simulated/open/update_icon(var/update_neighbors, var/roundstart_update = FALSE)
+/turf/open/open/update_icon(var/update_neighbors, var/roundstart_update = FALSE)
 	if (SSticker.current_state != GAME_STATE_PLAYING)
 		return
 
@@ -48,8 +48,8 @@
 
 	overlays.Cut()
 	var/turf/below = GetBelow(src)
-	if (istype(below, /turf/simulated/open))
-		ChangeTurf(/turf/simulated/open)
+	if (istype(below, /turf/open/open))
+		ChangeTurf(/turf/open/open)
 		return
 
 	vis_contents.Cut()

@@ -4,7 +4,7 @@
 	Requires a nearby wall which runs both zlevels
 **********************************************************/
 /datum/vertical_travel_method/climb
-	var/turf/simulated/wall/surface = null
+	var/turf/closed/wall/surface = null
 	start_verb_visible = "%m starts climbing %d the %s"
 	start_verb_personal = "You start climbing %d the %s"
 	base_time = 110
@@ -15,11 +15,11 @@
 /datum/vertical_travel_method/climb/can_perform(var/mob/living/L, var/dir)
 	.=..()
 	if (.)
-		if (isrobot(M))
-			to_chat(M, SPAN_NOTICE("You're a robot, you can't climb.")) //Robots can't climb
+		if (iscyborg(M))
+			to_chat(M, "<span class='notice'>You're a robot, you can't climb.</span>") //Robots can't climb
 			return FALSE
-		else if (istype(M, /mob/living/exosuit))
-			to_chat(M, SPAN_NOTICE("Mecha can not climb, yet."))
+		else if (ismecha(M))
+			to_chat(M, "<span class='notice'>Mecha can not climb, yet.</span>")
 			return FALSE //Mechas can't climb, for now.
 			//Todo future: add some kind of var or function to allow certain mechs to climb
 
@@ -27,20 +27,20 @@
 			/*
 				Climbing under gravity not yet implemented. would need special powers or augments
 			*/
-			to_chat(M, SPAN_NOTICE("Gravity is keeping you down, you can't climb like this."))
+			to_chat(M, "<span class='notice'>Gravity is keeping you down, you can't climb like this.</span>")
 			return FALSE
 
 
 
 		//Climbing in 0G requires a continuous wall to ascend or descend
-		var/turf/simulated/wall/W = null
+		var/turf/closed/wall/W = null
 
 		//Lets examine the walls around us
 		for (var/d in cardinal)
-			var/turf/simulated/wall/WA = get_step(origin, d)
+			var/turf/closed/wall/WA = get_step(origin, d)
 			if (istype(WA))
 				//We've found a wall, now lets look at the destination floor
-				var/turf/simulated/wall/WB = get_step(destination, d)
+				var/turf/closed/wall/WB = get_step(destination, d)
 				if (istype(WB))
 					//We've successfully located a smooth wall that spans both floors, we can climb it
 					W = WA
@@ -98,10 +98,10 @@
 			if (istype(H.shoes, /obj/item/clothing/shoes/magboots))
 				var/obj/item/clothing/shoes/magboots/MB = H.shoes
 				if (!MB.magpulse)
-					to_chat(M, SPAN_NOTICE("You could use your [MB] to walk up the [surface] if they were turned on."))
+					to_chat(M, "<span class='notice'>You could use your [MB] to walk up the [surface] if they were turned on.</span>")
 					return FALSE
 
-			to_chat(M, SPAN_NOTICE("Your shoes don't have enough grip to climb up."))
+			to_chat(M, "<span class='notice'>Your shoes don't have enough grip to climb up.</span>")
 			return FALSE
 
 

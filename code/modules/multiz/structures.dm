@@ -113,11 +113,11 @@
 	if(istype(throw_man,/mob/living/carbon/human))
 		var/mob/living/carbon/human/user = throw_man
 		var/through =  istop ? "down" : "up"
-		user.visible_message(SPAN_WARNING("[user] takes position to throw [C] [through] \the [src]."),
-		SPAN_WARNING("You take position to throw [C] [through] \the [src]."))
+		user.visible_message("<span class='warning'>[user] takes position to throw [C] [through] \the [src].</span>",
+		"<span class='warning'>You take position to throw [C] [through] \the [src].</span>")
 		if(do_after(user, 10))
-			user.visible_message(SPAN_WARNING("[user] throws [C] [through] \the [src]!"),
-			SPAN_WARNING("You throw [C] [through] \the [src]."))
+			user.visible_message("<span class='warning'>[user] throws [C] [through] \the [src]!</span>",
+			"<span class='warning'>You throw [C] [through] \the [src].</span>")
 			user.drop_item()
 			C.forceMove(target.loc)
 			var/direction = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
@@ -138,7 +138,7 @@
 		attack_hand(user)
 
 /obj/structure/multiz/ladder/attack_hand(var/mob/M)
-	if (isrobot(M) && !isdrone(M))
+	if (iscyborg(M) && !isdrone(M))
 		var/mob/living/silicon/robot/R = M
 		climb(M, (climb_delay*6)/R.speed_factor) //Robots are not built for climbing, they should go around where possible
 		//I'd rather make them unable to use ladders at all, but eris' labyrinthine maintenance necessitates it
@@ -148,7 +148,7 @@
 
 /obj/structure/multiz/ladder/proc/climb(mob/M, delay)
 	if(!target || !istype(target.loc, /turf))
-		to_chat(M, SPAN_NOTICE("\The [src] is incomplete and can't be climbed."))
+		to_chat(M, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
 		return
 	if(isliving(M))
 		var/mob/living/L = M
@@ -157,19 +157,19 @@
 	var/mob/tempMob
 	for(var/atom/A in T)
 		if(!A.CanPass(M))
-			to_chat(M, SPAN_NOTICE("\A [A] is blocking \the [src]."))
+			to_chat(M, "<span class='notice'>\A [A] is blocking \the [src].</span>")
 			return
 		else if (A.density && ismob(A))
 			tempMob = A
 			continue
 
 	if (tempMob)
-		to_chat(M, SPAN_NOTICE("\A [tempMob] is blocking \the [src], making it harder to climb."))
+		to_chat(M, "<span class='notice'>\A [tempMob] is blocking \the [src], making it harder to climb.</span>")
 		delay = delay * 1.5
 
 	//Robots are a quarter ton of steel and most of them lack legs or arms of any appreciable sorts.
 	//Even being able to climb ladders at all is a violation of newton'slaws. It shall at least be slow and communicated as such
-	if (isrobot(M) && !isdrone(M))
+	if (iscyborg(M) && !isdrone(M))
 		M.visible_message(
 			"<span class='notice'>\A [M] starts slowly climbing [istop ? "down" : "up"] \a [src]!</span>",
 			"<span class='danger'>You begin the slow, laborious process of dragging your hulking frame [istop ? "down" : "up"] \the [src]</span>",
@@ -206,7 +206,7 @@
 			if(target)
 				if(user.client)
 					if(user.is_watching == TRUE)
-						to_chat(user, SPAN_NOTICE("You look [istop ? "down" : "up"] \the [src]."))
+						to_chat(user, "<span class='notice'>You look [istop ? "down" : "up"] \the [src].</span>")
 						user.client.eye = user.client.mob
 						user.client.perspective = MOB_PERSPECTIVE
 						user.hud_used.updatePlaneMasters(user)
@@ -218,9 +218,9 @@
 						user.is_watching = TRUE
 				return
 		else
-			to_chat(user, SPAN_NOTICE("You can't do it right now."))
+			to_chat(user, "<span class='notice'>You can't do it right now.</span>")
 		return
-	else 
+	else
 		user.client.eye = user.client.mob
 		user.client.perspective = MOB_PERSPECTIVE
 		user.hud_used.updatePlaneMasters(user)
@@ -260,7 +260,7 @@
 
 	if(!target)
 		if(ismob(AM))
-			to_chat(AM, SPAN_WARNING("There are no stairs above."))
+			to_chat(AM, "<span class='warning'>There are no stairs above.</span>")
 		log_debug("[src.type] at [src.x], [src.y], [src.z] have non-existant target")
 		target = null
 		return
@@ -281,7 +281,7 @@
 /obj/structure/multiz/stairs/active/attack_ai(mob/living/silicon/ai/user)
 	. = ..()
 	if(!target)
-		to_chat(user, SPAN_WARNING("There are no stairs above."))
+		to_chat(user, "<span class='warning'>There are no stairs above.</span>")
 		log_debug("[src.type] at [src.x], [src.y], [src.z] have non-existant target")
 
 /obj/structure/multiz/stairs/active/attack_robot(mob/user)
@@ -299,7 +299,7 @@
 			if(target)
 				if(user.client)
 					if(user.is_watching == TRUE)
-						to_chat(user, SPAN_NOTICE("You look [istop ? "down" : "up"] \the [src]."))
+						to_chat(user, "<span class='notice'>You look [istop ? "down" : "up"] \the [src].</span>")
 						user.client.eye = user.client.mob
 						user.client.perspective = MOB_PERSPECTIVE
 						user.hud_used.updatePlaneMasters(user)
@@ -311,9 +311,9 @@
 						user.is_watching = TRUE
 				return
 		else
-			to_chat(user, SPAN_NOTICE("You can't do it right now."))
+			to_chat(user, "<span class='notice'>You can't do it right now.</span>")
 		return
-	else 
+	else
 		user.client.eye = user.client.mob
 		user.client.perspective = MOB_PERSPECTIVE
 		user.hud_used.updatePlaneMasters(user)
@@ -347,7 +347,7 @@
 		var/list/seen = viewers(7, my_burrow.loc)
 		my_burrow.audio("crumble", 80)
 		for(var/mob/M in seen)
-			M.show_message(SPAN_NOTICE("The burrow collapses inwards!"), 1)
+			M.show_message("<span class='warning'>The burrow collapses inwards!</span>"), 1)
 
 		free_deepmaint_ladders -= src
 		my_burrow.collapse()
