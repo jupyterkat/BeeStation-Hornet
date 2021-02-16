@@ -173,7 +173,7 @@ GLOBAL_LIST_INIT(auxtools_atmos_initialized,FALSE)
 	if(gas["TEMP"])
 		var/temp = text2num(gas["TEMP"])
 		gas -= "TEMP"
-		if(!isnum(temp) || temp < 2.7)
+		if(!isfinite(temp) || temp < 2.7)
 			temp = 2.7
 		set_temperature(temp)
 	clear()
